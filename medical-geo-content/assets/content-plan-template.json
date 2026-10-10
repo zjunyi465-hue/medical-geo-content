@@ -1,0 +1,31 @@
+{
+  "artifact_type": "content_plan",
+  "artifact_version": "1.0",
+  "task_id": "",
+  "planning_goal": "",
+  "reader": "",
+  "scope_and_quantity": "",
+  "material_summary": [],
+  "existing_content_review": null,
+  "candidates": [
+    {
+      "id": "",
+      "reader_question": "",
+      "reader_need": "",
+      "format_and_scope": "",
+      "claim_ids": [],
+      "marketing_point_ids": [],
+      "institution_role": "",
+      "content_angle": "",
+      "medical_support_needed": [],
+      "key_gaps": [],
+      "title_options": [],
+      "selection_reason": "",
+      "next_action": "",
+      "status": "candidate"
+    }
+  ],
+  "selected_topic_ids": [],
+  "sequence_or_calendar": [],
+  "planning_notes": []
+}

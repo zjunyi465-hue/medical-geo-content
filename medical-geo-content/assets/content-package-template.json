@@ -1,0 +1,36 @@
+{
+  "artifact_type": "content_package",
+  "artifact_version": "1.0",
+  "task_id": "",
+  "draft_sha256": null,
+  "title_status": "not_requested",
+  "selected_title": null,
+  "title_options": [],
+  "summary_status": "not_requested",
+  "summary": null,
+  "items": [
+    {
+      "id": "",
+      "kind": "",
+      "status": "planned",
+      "purpose": "",
+      "placement": null,
+      "content_or_plan": null,
+      "asset_path_or_url": null,
+      "caption": null,
+      "alt": null,
+      "source_ids": [],
+      "claim_ids": [],
+      "rights_status": "not_checked",
+      "review_notes": []
+    }
+  ],
+  "web_fields": {
+    "status": "not_requested",
+    "channel": null,
+    "metadata": {},
+    "structured_data": null,
+    "omitted_or_pending": []
+  },
+  "package_notes": []
+}

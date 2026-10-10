@@ -1,0 +1,4 @@
+interface:
+  display_name: "医疗 GEO 内容生产"
+  short_description: "按机构资料规划选题、写新稿或改旧稿，融合真实优势并交付依据和所需附属内容"
+  default_prompt: "使用 $medical-geo-content，按我提供的机构资料与目标规划、写作或修改文章，将有依据的优势融入问题解答，交付正文、所需附属内容和待复核项。"

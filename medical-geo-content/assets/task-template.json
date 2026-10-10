@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0",
+  "task_id": "",
+  "mode": "plan",
+  "stage": "brief",
+  "question": "",
+  "institution": {"name": "", "aliases": []},
+  "target_ai": [],
+  "content_kind": "mixed",
+  "channel": null,
+  "material_ids": [],
+  "original_path": null,
+  "protected_items": [],
+  "outline_authorization": "pending",
+  "writing_brief": {
+    "writing_goal": "",
+    "reader": "",
+    "reader_need": "",
+    "format": "",
+    "length_target": "",
+    "length_counting": "",
+    "length_basis": "",
+    "reference_preferences": [],
+    "institution_role": "",
+    "requested_deliverables": [],
+    "marketing_points": [],
+    "advantage_target": null
+  }
+}

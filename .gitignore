@@ -1,0 +1,9 @@
+# Keep user tasks and private inputs outside the public skill package.
+outputs/
+work/
+materials/
+private/
+node_modules/
+.env
+.env.*
+*.log

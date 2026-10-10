@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0",
+  "task_id": "",
+  "draft_sha256": "",
+  "mapping": [],
+  "brand_mentions": [],
+  "advantage_review": null,
+  "evidence_review": {
+    "status": "pending",
+    "pivotal_claim_ids": [],
+    "applicability_findings": [],
+    "numerical_and_comparison_findings": [],
+    "added_or_removed_claims": [],
+    "unresolved_items": []
+  },
+  "editorial_review": {
+    "status": "pending",
+    "question_and_title": "",
+    "explanation_depth": "",
+    "section_contributions": [],
+    "length_review": {
+      "actual_body_han": null,
+      "counting": "",
+      "target": "",
+      "assessment": "",
+      "body_range": null
+    },
+    "institution_integration": "",
+    "style_and_repetition": "",
+    "requirements_not_met": [],
+    "revision_actions": []
+  },
+  "checks": {
+    "format": "pending",
+    "source_support": "pending",
+    "medical": "pending",
+    "publication": "pending_channel"
+  },
+  "blockers": [],
+  "notes": []
+}
