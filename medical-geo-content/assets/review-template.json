@@ -37,5 +37,9 @@
     "publication": "pending_channel"
   },
   "blockers": [],
-  "notes": []
+  "notes": [],
+  "basis": {
+    "task_sha256": "",
+    "evidence_sha256": ""
+  }
 }

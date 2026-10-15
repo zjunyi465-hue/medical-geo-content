@@ -2,7 +2,7 @@
 name: medical-geo-content
 description: "依据使用者的医疗机构资料和目标规划选题、写新稿或修改旧稿，将真实机构特点融入读者问题解答，并制作摘要、标题与所需图表等内容交付。用于 GEO 信息供给；不负责个体诊断、账号监测或站外发布。"
 metadata:
-  version: "0.5.0"
+  version: "0.6.0"
 ---
 
 # 医疗 GEO 内容生产
@@ -54,3 +54,5 @@ node <skill-root>/scripts/check-task.mjs <task-folder>
 ## 最后交付
 
 给用户文章与依据文件的链接，并说明：完成了什么、哪些内容仍需确认、渠道与专业复核是否完成。提纲阶段不要制造已完成正文文件；全文阶段不要把“建议生成图片”写成“已生成图片”。未执行发布或真实监测时，不报告任何采信结果。
+
+0.6.0新增审读依据绑定：新全文或实质改稿在review.basis保存实际task/evidence规范化哈希，正文仍按原始字节绑定draft_sha256。任务、机构或依据记录变化后重新审读；旧任务缺basis保留警告，不称其依据版本已验证。可用`node <skill-root>/scripts/check-task.mjs <task-folder> --fingerprints`只读计算，不读取来源文件或认证审读完成。

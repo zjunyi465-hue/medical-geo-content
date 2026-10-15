@@ -13,6 +13,9 @@ const CAVEAT = '仅检查本地产物的结构、状态声明、引用对应和�
 const isObject = value => value !== null && typeof value === 'object' && !Array.isArray(value);
 const nonblank = value => typeof value === 'string' && value.trim().length > 0;
 const own = (object, key) => Object.prototype.hasOwnProperty.call(object, key);
+const canonical = x => Array.isArray(x) ? x.map(canonical) : isObject(x) ? Object.fromEntries(Object.keys(x).sort().map(k => [k, canonical(x[k])])) : x;
+const objectHash = x => createHash('sha256').update(JSON.stringify(canonical(x)), 'utf8').digest('hex');
+export const reviewBasis = (task, evidence) => ({task_sha256: objectHash(task), evidence_sha256: objectHash(evidence)});
 
 function validISODate(value) {
   if (typeof value !== 'string') return false;
@@ -57,6 +60,7 @@ export async function checkTask(folder) {
   const errors = [];
   const warnings = [];
   let advantageMetrics = null;
+  let inputBasis = null;
   const error = (code, at, message) => errors.push({ code, path: at, message });
   const warn = (code, at, message) => warnings.push({ code, path: at, message });
   const result = () => ({
@@ -67,6 +71,7 @@ export async function checkTask(folder) {
     caveat: CAVEAT,
     errors,
     warnings,
+    input_basis: inputBasis,
     advantage_metrics: advantageMetrics
   });
 
@@ -180,6 +185,7 @@ export async function checkTask(folder) {
 
   const task = json('task.json', true);
   const evidence = json('evidence.json', true);
+  if (isObject(task) && isObject(evidence)) inputBasis = reviewBasis(task, evidence);
   const protectedItems = new Map();
   let stageIndex = -1;
   if (task !== undefined && object(task, 'task')) {
@@ -264,6 +270,13 @@ export async function checkTask(folder) {
   if (draft && !nonblank(draft.text)) error('EMPTY_DRAFT', 'draft.md', '草稿不得为空。');
   const review = json('review.json', stageIndex >= 2);
   if (review !== undefined && object(review, 'review')) {
+    if (!own(review, 'basis')) warn('REVIEW_BASIS_MISSING', 'review.basis', '旧记录仅绑定正文；任务或依据版本未绑定，新审读需实际复核后补齐basis。');
+    else if (object(review.basis, 'review.basis')) {
+      for (const key of ['task_sha256', 'evidence_sha256']) {
+        if (typeof review.basis[key] !== 'string' || !/^[a-f0-9]{64}$/.test(review.basis[key])) error('INVALID_HASH', `review.basis.${key}`, '必须填写对应任务或依据对象的规范化SHA256。');
+        else if (inputBasis && review.basis[key] !== inputBasis[key]) error('REVIEW_BASIS_MISMATCH', `review.basis.${key}`, '任务或依据记录已改变，须重新审读，不能沿用旧结论。');
+      }
+    }
     fields(review, ['schema_version', 'task_id', 'draft_sha256', 'mapping', 'brand_mentions', 'checks', 'blockers', 'notes'], 'review');
     enumeration(review.schema_version, ['1.0'], 'review.schema_version');
     if (string(review.task_id, 'review.task_id', true) && isObject(task) && review.task_id !== task.task_id) error('TASK_ID_MISMATCH', 'review.task_id', '审核记录必须对应同一 task_id。');
@@ -387,17 +400,22 @@ export async function checkTask(folder) {
 async function main() {
   const args = process.argv.slice(2);
   const jsonOutput = args.includes('--json');
-  const paths = args.filter(arg => arg !== '--json');
+  const fingerprints = args.includes('--fingerprints');
+  const paths = args.filter(arg => !['--json','--fingerprints'].includes(arg));
   if (args.includes('--help') || args.includes('-h')) {
-    console.log('用法：node scripts/check-task.mjs <任务目录> [--json]\n此工具只检查本地产物，不读取来源或原文路径，不提供医学或发布认证。');
+    console.log('用法：node scripts/check-task.mjs <任务目录> [--json | --fingerprints]\n此工具只检查本地产物，不读取来源或原文路径，不提供医学或发布认证。');
     return;
   }
   if (paths.length !== 1 || paths[0].startsWith('--')) {
-    console.error('用法：node scripts/check-task.mjs <任务目录> [--json]');
+    console.error('用法：node scripts/check-task.mjs <任务目录> [--json | --fingerprints]');
     process.exitCode = 1;
     return;
   }
   const report = await checkTask(paths[0]);
+  if (fingerprints) {
+    if (!report.input_basis) { console.error('无法读取task/evidence对象，未生成依据哈希。'); process.exitCode = 1; return; }
+    console.log(JSON.stringify({basis: report.input_basis, scope:'hash_helper_only', publication_ready:false},null,2));return;
+  }
   if (jsonOutput) console.log(JSON.stringify(report, null, 2));
   else {
     console.log(report.ok ? '格式与引用对应检查未发现错误。' : '格式与引用对应检查发现错误。');
